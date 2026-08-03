@@ -1,7 +1,0 @@
-{
-	"parent": "minecraft:item/generated",
-    "textures": {
-        "layer0": "holdmetight:item/collar_item",
-        "layer1": "holdmetight:item/collar_item_tag"
-    }
-}
