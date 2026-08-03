@@ -1,0 +1,13 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "HOLDMETIGHT_HELD_ENTITY",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/ricardthegreat/holdmetight/client/armposes/HeldEntityArmPoser",
+        "field": "HELD_ENTITY_ARM_POSE"
+      }
+    }
+  ]
+}

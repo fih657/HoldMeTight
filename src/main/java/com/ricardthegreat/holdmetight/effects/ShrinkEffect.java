@@ -1,0 +1,34 @@
+package com.ricardthegreat.holdmetight.effects;
+
+import javax.annotation.Nonnull;
+
+import com.ricardthegreat.holdmetight.utils.sizeutils.EntitySizeUtils;
+
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+
+public class ShrinkEffect extends MobEffect{
+
+    public ShrinkEffect(MobEffectCategory category, int colour) {
+        super(category, colour);
+    }
+
+    @Override
+    public boolean applyEffectTick(@Nonnull LivingEntity livingEntity, int amplifier) {
+        //this works out to make the entity approximately 2/3 height after 1min at amp 0
+        double mult = 1-((0.00034)*(amplifier+1));
+        float size = EntitySizeUtils.getSize(livingEntity);
+        double target = size*mult;
+
+        EntitySizeUtils.setSize(null, (Entity) livingEntity, (float) target, 0);
+        return true;
+    }
+    
+    @Override
+    public boolean shouldApplyEffectTickThisTick(int remainingTicks, int amplifier) {
+        return true;
+    }
+    
+}

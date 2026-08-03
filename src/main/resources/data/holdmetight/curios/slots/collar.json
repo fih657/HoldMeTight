@@ -1,0 +1,6 @@
+{
+    "operation": "SET",
+    "size": 1,
+    "icon": "holdmetight:slot/collar",
+    "validators": ["holdmetight:collar"]
+}

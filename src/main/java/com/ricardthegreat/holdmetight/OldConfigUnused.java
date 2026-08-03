@@ -1,0 +1,103 @@
+package com.ricardthegreat.holdmetight;
+
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+
+// An example config class. This is not required, but it's a good idea to have one to keep your config organized.
+// Demonstrates how to use Forge's config APIs
+//@EventBusSubscriber(modid = HoldMeTight.MODID)
+public class OldConfigUnused
+{
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+
+        private static final ModConfigSpec.ConfigValue<Double> MAX_HITBOX_SIZE = BUILDER
+                .comment("The maximum scale a hitbox can be (8 or lower recommended for performance sake when larger)")
+                .define("maxHitboxScale", 8d);
+
+        private static final ModConfigSpec.ConfigValue<Double> MAX_ENTITY_SIZE = BUILDER
+                .comment("The maximum scale an entity can become, set to 0 for no cap (cannot be below 1)")
+                .define("maxEntityScale", 0d);
+
+        private static final ModConfigSpec.ConfigValue<Double> PAPER_WINGS_MAX_SCALE = BUILDER
+                .comment("the largest someone can be while wearing the paper wings item (an elytra in all ways that matter)")
+                .define("maxWingsScale", 0.05d);
+
+        private static final ModConfigSpec.ConfigValue<Double> MIN_PARTICLE_SCALE = BUILDER
+                .comment("the scale an entity should be before ambient particles are disabled on them")
+                .define("minParticleScale", 0.5d);
+
+        private static final ModConfigSpec.ConfigValue<Boolean> MINING_SPEED_SCALE_LINK = BUILDER
+                .comment("should a players mining speed be linked to their scale (faster for larger folk slower for smaller folk)")
+                .define("miningSpeedScaleLink", true);
+
+        private static final ModConfigSpec.ConfigValue<Boolean> DAMAGE_TAKEN_SCALE_LINK = BUILDER
+                .comment("should the damage a player takes be linked to their scale (less for larger folk more for smaller folk)")
+                .define("damageTakenScaleLink", true);
+
+        private static final ModConfigSpec.ConfigValue<Boolean> CAN_PICKUP_ENTITIES = BUILDER
+                .comment("enable or disable the ability to pickup non player mobs")
+                .define("canPickupMobs", true);
+
+        private static final ModConfigSpec.ConfigValue<Boolean> CAN_PICKUP_PLAYERS = BUILDER
+                .comment("enable or disable the ability to pickup players")
+                .define("canPickupPlayers", true);
+
+        private static final ModConfigSpec.ConfigValue<Boolean> PLAYER_CHAT_SCALE = BUILDER
+                //.comment("should player messages be scaled based on their size (this is not properly tested and could cause many issues use at your own risk)")
+                .comment("this isnt used currently")
+                .define("playerChatScale", false);
+
+        /* 
+        private static final ModConfigSpec.IntValue MAGIC_NUMBER = BUILDER
+                .comment("A magic number")
+                .defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
+
+        public static final ModConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
+                .comment("What you want the introduction message to be for the magic number")
+                .define("magicNumberIntroduction", "The magic number is... ");
+
+        // a list of strings that are treated as resource locations for items
+        private static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
+                .comment("A list of items to log on common setup.")
+                .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), Config::validateItemName);
+        */
+
+        static final ModConfigSpec SPEC = BUILDER.build();
+
+        public static double maxHitboxScale;
+        public static double maxEntityScale;
+        public static double maxWingsScale;
+        public static double minParticleScale;
+        public static boolean playerChatScale;
+        public static boolean miningSpeedScaleLink;
+        public static boolean damageTakenScaleLink;
+        public static boolean canPickupEntities;
+        public static boolean canPickupPlayers;
+        
+        private static boolean validateItemName(final Object obj)
+        {
+                return obj instanceof final String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.tryParse(itemName));
+        }
+
+        //@SubscribeEvent
+        static void onLoad(final ModConfigEvent event)
+        {
+                maxHitboxScale = MAX_HITBOX_SIZE.get();
+                if (MAX_ENTITY_SIZE.get() <= 0) {
+                        maxEntityScale = Float.POSITIVE_INFINITY;
+                }else if (MAX_ENTITY_SIZE.get() < 1) {
+                        maxEntityScale = 1;
+                }else{
+                        maxEntityScale = MAX_ENTITY_SIZE.get();
+                }
+                maxWingsScale = PAPER_WINGS_MAX_SCALE.get();
+                minParticleScale = MIN_PARTICLE_SCALE.get();
+                playerChatScale = PLAYER_CHAT_SCALE.get();
+                miningSpeedScaleLink = MINING_SPEED_SCALE_LINK.get();
+                damageTakenScaleLink = DAMAGE_TAKEN_SCALE_LINK.get();
+                canPickupEntities = CAN_PICKUP_ENTITIES.get();
+                canPickupPlayers = CAN_PICKUP_PLAYERS.get();
+        }
+}
